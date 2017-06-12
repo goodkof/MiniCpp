@@ -1,11 +1,10 @@
-// ***** Internal Library Functions ***** 
-// Add more of your own, here. 
+// ***** 内部函数库 ***** 
+// 需要扩展功能在这里添加喔
 
 #include <iostream> 
 #include <cstdlib> 
 #include <cstdio> 
 #include "mccommon.h" 
-/* 下面的几个函数声明是little c内部函数 */
 using namespace std;
 
 // Read a character from the console. 
@@ -16,7 +15,7 @@ int call_getchar()
 {
 	char ch;
 	ch = getchar();
-	// Advance past ()   
+	//Advance past ()   
 	get_token();
 	if (*token != '(')
 		throw InterpExc(PAREN_EXPECTED);
@@ -28,7 +27,7 @@ int call_getchar()
 	return ch;
 }
 
-// Write a character to the display. 
+//写一个字符到显示设备
 int call_putchar()
 {
 	int value;
@@ -37,7 +36,7 @@ int call_putchar()
 	return value;
 }
 
-// Return absolute value. 
+// 返回绝对值
 int call_abs()
 {
 	int val;
@@ -46,7 +45,7 @@ int call_abs()
 	return val;
 }
 
-// Return a randome integer. 
+// 返回一个随机整数
 int call_rand()
 {
 	// Advance past ()   

@@ -9,7 +9,7 @@
 #include <cstdlib> 
 #include <cctype> 
 #include "mccommon.h" 
-
+#include "vld.h"
 using namespace std;
 
 char *prog;  // current execution point in source code  
@@ -68,49 +68,54 @@ bool breakfound = false; // true if break encountered
 
 int main(int argc, char *argv[])
 {
+#ifdef _Debug
+	argc = 2;
+	argv[1] = "./a.cpp";
+#endif // DEBUG
+
 	if (argc != 2) {
 		cout << "Usage: minicpp <filename>\n";
 		return 1;
 	}
 
-	// Allocate memory for the program. 
+	// 为程序分配内存 
 	try {
 		p_buf = new char[PROG_SIZE];
 	}
 	catch (bad_alloc exc) {
-		cout << "Could Not Allocate Program Buffer\n";
+		cout << "无法为源码分配内存\n";
 		return 1;
 	}
 
-	// Load the program to execute. 
+	// 加载程序
 	if (!load_program(p_buf, argv[1])) return 1;
 
-	// Set program pointer to start of program buffer. 
+	// 设置运行时指针与源码缓冲区对齐
 	prog = p_buf;
 
 	try {
 		// Find the location of all functions 
 		// and global variables in the program. 
-		prescan();
+		prescan();//预扫描
 
 		// Next, set up the call to main(). 
 
-		// Find program starting point. 
+		//找到程序的入口点main(),并将程序的运行时指针指向main函数
 		prog = find_func("main");
 
 		// Check for incorrect or missing main() function. 
 		if (!prog) {
-			cout << "main() Not Found\n";
+			cout << "main" << "() 未定义\n";
 			return 1;
 		}
 
 		// Back up to opening (. 
 		prog--;
 
-		// Set the first token to main 
+		// 设置第一个标记为main
 		strcpy(token, "main");
 
-		// Call main() to start interpreting. 
+		// 调用main()开始解释过程
 		call();
 	}
 	catch (InterpExc exc) {
@@ -125,7 +130,7 @@ int main(int argc, char *argv[])
 	return ret_value;
 }
 
-// Load a program. 
+// 载入一个程序
 bool load_program(char *p, char *fname)
 {
 	int i = 0;
@@ -158,6 +163,7 @@ bool load_program(char *p, char *fname)
 
 // Find the location of all functions in the program 
 // and store global variables.  
+//找到并初始化所有的全局变量,记录代码中每个函数定义的位置
 void prescan()
 {
 	char *p, *tp;

@@ -2,29 +2,66 @@
 // Common declarations used by parser.cpp, minicpp.cpp, 
 // or libcpp.cpp, or by other files that you might add. 
 // 
-const int MAX_T_LEN = 128;   // max token length 
-const int MAX_ID_LEN = 31;    // max identifier length 
-const int PROG_SIZE = 10000; // max program size 
-const int NUM_PARAMS = 31;    // max number of parameters 
+const int MAX_T_LEN = 128;   // 最大标记长度
+const int MAX_ID_LEN = 31;   // max identifier length
+const int PROG_SIZE = 10000; // 最大代码大小
+const int NUM_PARAMS = 31;   // 参数组数量c89 标准  c99 127个 
 
+
+//这两个枚举的区别是上面的比较广义,指代各种token的类型, 比如block, 这个是不会是关键字的,
+//下面的可以理解成就是关键字
 // Enumeration of token types. /* 标记类型 主要是标记是什么类型的,是数字,是字符,是块,是字符串等等.*/
 enum tok_types 
 {
-	UNDEFTT, DELIMITER, IDENTIFIER,
-	NUMBER, KEYWORD, TEMP, STRING, BLOCK
-};
+	UNDEFTT,	   //未定义的标记类型
+	DELIMITER,	   //分隔符
+	IDENTIFIER,	   //标识符
+	NUMBER,		   //数值
+	KEYWORD,	   //关键字
+	TEMP, 		   //临时类型(右值或者实参)
+	STRING,		   //字符串
+	BLOCK,		   //代码块(变量的作用域)
+	//TYPE		   //内建类型
+};				   
+
 
 /* 内部关键字值定义 */
 // Enumeration of internal representation of tokens. 
 enum token_ireps 
 {
-	UNDEFTOK, ARG, CHAR, INT, SWITCH,
-	CASE, IF, ELSE, FOR, DO, WHILE, BREAK,
-	RETURN, COUT, CIN, END
+	UNDEFTOK, 		   //未定义的保留关
+	ARG, 			   //
+	CHAR, 			   //字符类型
+	//BOOL, 			   //布尔类型
+	//SHORT,				   //短整型
+	INT,				   //整形
+	//LONG,				   //长整形
+	//FLOAT,		           //单精度浮点型
+	//DOUBLE,		           //双精度浮点型
+	//STRUCT,		           //结构体
+	//FALSE,		           //假
+	//TRUE,		           //真
+	SWITCH,					   //switch 分支
+	CASE, 					   //case 分支项
+	IF, 					   //if 分支
+	ELSE,					   //else 分支
+	FOR, 					   //for 循环
+	DO, 					   //do while 循环
+	WHILE, 					   //while 循环
+	BREAK,					   //破坏
+	RETURN,					   //返回
+	COUT, 					   //控制台输出
+	CIN, 					   //控制台输入
+	END,						   //结束符
+	//ENDL,				   //结束符外加换行
+	//DEFAULT,			   //缺省
+	//CONTINUE,			   //继续
+	//NONE				   //不存在
 };
 
 /* 操作符定义 大于,等于,小于等算术操作符的内部形式 */
 // Enumeration of two-character operators, such as <=. 
+//这里注意从1开始, 以免用到0出现误解.
 enum double_ops { LT = 1, LE, GT, GE, EQ, NE, LS, RS, INC, DEC };
 
 // These are the constants used when throwing a 
@@ -53,7 +90,7 @@ extern int ret_value; // function return value
 
 extern bool breakfound; // true if break encountered 
 
-						// Exception class for Mini C++. 
+// Mini C++ 中的解析异常类
 class InterpExc {
 	error_msg err;
 public:
@@ -63,20 +100,20 @@ public:
 
 // Interpreter prototypes. 
 void prescan();
-void decl_global();
+void decl_global();					//定义一个全局变量
 void call();
 void putback();
-void decl_local();
-void exec_if();
+void decl_local();					//定义一个局部变量
+void exec_if();						//执行if语句
 void find_eob();
-void exec_for();
-void exec_switch();
+void exec_for();					// 执行for语句
+void exec_switch();					// 执行switch语句
 void get_params();
 void get_args();
-void exec_while();
-void exec_do();
-void exec_cout();
-void exec_cin();
+void exec_while();					 // 执行while语句
+void exec_do();						 // 执行do语句
+void exec_cout();					 // 执行控制台输出
+void exec_cin();					 // 执行控制台输入
 void assign_var(char *var_name, int value); /* assign_var函数是分配一个变量存储空间 */
 bool load_program(char *p, char *fname);
 int find_var(char *s);
@@ -107,7 +144,7 @@ tok_types get_token();/* get_token函数是从当前的字符流中得到一个解释器内部的单词
 int internal_func(char *s);/* 从内部函数中查找是否有个*s的内部函数 */
 bool is_var(char *s);
 
-// "Standard library" prototypes. 
+// 标准库代理函数
 int call_getchar();
 int call_putchar();
 int call_abs();
