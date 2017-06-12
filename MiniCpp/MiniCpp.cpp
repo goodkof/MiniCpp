@@ -15,12 +15,13 @@ using namespace std;
 char *prog;  // current execution point in source code  
 char *p_buf; // points to start of program buffer 
 
-			 // This structure encapsulates the info 
-			 // associated with variables. 
+// This structure encapsulates the info 
+// associated with variables. 
+/* 变量属性结构 */
 struct var_type {
-	char var_name[MAX_ID_LEN + 1]; // name 
-	token_ireps v_type; // data type 
-	int value; // value  
+	char var_name[MAX_ID_LEN + 1]; // name /* 变量名字，名字最多允许32个字符 */ 
+	token_ireps v_type; // data type   /* 变量类型 */
+	int value; // value  			   /* 变量的值 */
 };
 
 // This vector holds info for global variables. 
@@ -30,6 +31,8 @@ vector<var_type> global_vars;
 // and parameters. 
 vector<var_type> local_var_stack;
 
+
+/* 函数调用堆栈 */
 // This structure encapsulates function info. 
 struct func_type {
 	char func_name[MAX_ID_LEN + 1]; // name 
@@ -46,11 +49,20 @@ stack<int> func_call_stack;
 // Stack for managing nested scopes. 
 stack<int> nest_scope_stack;
 
+
+/* ----------------------------------------------------------- */
+/* 变量说明：                                                  */
+/* token: 此变量是存放单词符号                                 */
+/* token_type: 此变量是存放单词的类型                          */
+/* tok:   此变量是存放内部关键字的值						   */
+/* ------------------------------------------------------------*/
 char token[MAX_T_LEN + 1]; // current token 
 tok_types token_type; // token type 
 token_ireps tok; // internal representation 
 
-int ret_value; // function return value 
+
+				
+int ret_value; // function return value  /* 存放用户定义的函数的返回值 */
 
 bool breakfound = false; // true if break encountered 
 

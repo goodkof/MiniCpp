@@ -153,10 +153,6 @@
   <ItemGroup>
     <ClInclude Include="mccommon.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\little c解释器分析[一].txt" />
-    <Text Include="..\little c解释器分析[二].txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
