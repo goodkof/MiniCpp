@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Libcpp.cpp" />
+    <ClCompile Include="Main.cpp" />
     <ClCompile Include="MiniCpp.cpp" />
     <ClCompile Include="Parser.cpp" />
   </ItemGroup>
