@@ -12,34 +12,34 @@
 #include "vld.h"
 using namespace std;
 
-char *prog;  // current execution point in source code  
-char *p_buf; // points to start of program buffer 
+char *prog;  // prog函数是little c脚本语言的程序代码的指针变量
+char *p_buf; // 缓冲prog,因为有时,分析可能会出现回朔,所以作者设置了此指针变量
 
 // This structure encapsulates the info 
 // associated with variables. 
 /* 变量属性结构 */
-struct var_type {
-	char var_name[MAX_ID_LEN + 1]; // name /* 变量名字，名字最多允许32个字符 */ 
-	token_ireps v_type; // data type   /* 变量类型 */
-	int value; // value  			   /* 变量的值 */
+struct var_type 
+{
+	char var_name[MAX_ID_LEN + 1];  // 变量名字，名字最多允许32个字符
+	token_ireps v_type;				// 变量类型
+	int value;						// 变量的值
 };
 
-// This vector holds info for global variables. 
+// 保存全局变量
 vector<var_type> global_vars;
 
-// This vector holds info for local variables 
-// and parameters. 
+// 保存局部变量和函数参数
 vector<var_type> local_var_stack;
 
-
-/* 函数调用堆栈 */
-// This structure encapsulates function info. 
-struct func_type {
-	char func_name[MAX_ID_LEN + 1]; // name 
-	token_ireps ret_type; // return type 
-	char *loc; // location of entry point in program  
+//保存了函数的类型
+struct func_type 
+{
+	char func_name[MAX_ID_LEN + 1]; // 函数名称
+	token_ireps ret_type;			// 返回类型
+	char *loc;						// 函数入口点位置 
 };
 
+/* 函数调用堆栈 */
 // This vector holds info about functions. 
 vector<func_type> func_table;
 
@@ -50,19 +50,14 @@ stack<int> func_call_stack;
 stack<int> nest_scope_stack;
 
 
-/* ----------------------------------------------------------- */
-/* 变量说明：                                                  */
-/* token: 此变量是存放单词符号                                 */
-/* token_type: 此变量是存放单词的类型                          */
-/* tok:   此变量是存放内部关键字的值						   */
-/* ------------------------------------------------------------*/
-char token[MAX_T_LEN + 1]; // current token 
-tok_types token_type; // token type 
-token_ireps tok; // internal representation 
+
+char token[MAX_T_LEN + 1];	// 此变量是存放当前标记 
+tok_types token_type;		// 此变量是存放标记的类型 
+token_ireps tok;			// 此变量是存放内部关键字的值
 
 
 				
-int ret_value; // function return value  /* 存放用户定义的函数的返回值 */
+int ret_value; // 存放用户定义的函数的返回值
 
 bool breakfound = false; // true if break encountered 
 
@@ -161,8 +156,7 @@ bool load_program(char *p, char *fname)
 	return true;
 }
 
-// Find the location of all functions in the program 
-// and store global variables.  
+// Find the location of all functions in the program and store global variables.  
 //找到并初始化所有的全局变量,记录代码中每个函数定义的位置
 void prescan()
 {
@@ -429,8 +423,7 @@ void call()
 	}
 }
 
-// Push the arguments to a function onto the local 
-// variable stack. 
+// Push the arguments to a function onto the local variable stack. 
 void get_args()
 {
 	int value, count, temp[NUM_PARAMS];
@@ -697,14 +690,13 @@ void exec_do()
 	int cond;
 	char *temp;
 
-
 	// Save location of top of do loop. 
 	putback(); // put back do 
 	temp = prog;
 
 	get_token(); // get start of loop block 
 
-				 // Confirm start of block. 
+	// Confirm start of block. 
 	get_token();
 	if (*token != '{')
 		throw InterpExc(BRACE_EXPECTED);
@@ -725,7 +717,8 @@ void exec_do()
 		find_eob();
 
 		// Now, find end of while expression. 
-		do {
+		do 
+		{
 			get_token();
 		} while (*token != ';' && tok != END);
 		if (tok == END) throw InterpExc(SYNTAX);

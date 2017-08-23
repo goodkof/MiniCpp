@@ -43,7 +43,7 @@ struct intern_func_type {
 	"putchar", call_putchar,
 	"abs", call_abs,
 	"rand", call_rand,
-	"", 0  // null terminate the list 
+	"", nullptr  // null terminate the list 
 };
 
 /*

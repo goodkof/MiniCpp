@@ -2,28 +2,29 @@
 // 需要扩展功能在这里添加喔
 
 #include <iostream> 
-#include <cstdlib> 
-#include <cstdio> 
 #include "mccommon.h" 
 using namespace std;
 
-// Read a character from the console. 
-// If your compiler supplies an unbuffered 
-// character intput function, feel free to 
-// substitute it for the call to cin.get(). 
+void check_paren()
+{
+	//检查括弧  
+	get_token();
+	if (*token != '(')
+	{
+		throw InterpExc(PAREN_EXPECTED);
+	}
+	get_token();
+	if (*token != ')')
+	{
+		throw InterpExc(PAREN_EXPECTED);
+	}
+}
+//从控制台读取一个字符,如果你的编译器支持一个无缓冲的字符输入函数，可以随意的使用 cin.get()来代替这个getchar()
 int call_getchar()
 {
 	char ch;
 	ch = getchar();
-	//Advance past ()   
-	get_token();
-	if (*token != '(')
-		throw InterpExc(PAREN_EXPECTED);
-
-	get_token();
-	if (*token != ')')
-		throw InterpExc(PAREN_EXPECTED);
-
+	check_paren();
 	return ch;
 }
 
@@ -48,16 +49,7 @@ int call_abs()
 // 返回一个随机整数
 int call_rand()
 {
-	// Advance past ()   
-	get_token();
-	if (*token != '(')
-	{
-		throw InterpExc(PAREN_EXPECTED);
-	}
-	get_token();
-	if (*token != ')')
-	{
-		throw InterpExc(PAREN_EXPECTED);
-	}
+	check_paren();
 	return rand();
 }
+
